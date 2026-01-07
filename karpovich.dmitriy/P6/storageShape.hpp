@@ -10,7 +10,6 @@ namespace karpovich
     rectangle_t getFrameRect() const noexcept override;
     void move(point_t p) noexcept override;
     void move(double dx, double dy) noexcept override;
-    void doScale(double k) noexcept override;
     void append(Shape* app);
     void preappend(Shape* app);
     void add(Shape* app, size_t idx);
