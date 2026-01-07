@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
-#include "shapes.hpp"
+#include <shapes.hpp>
 
 int main()
 {
