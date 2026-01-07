@@ -1,7 +1,7 @@
 #ifndef SHAPES_HPP
 #define SHAPES_HPP
 #include <cmath>
-#include <podshape.hpp>
+#include "podshape.hpp"
 namespace karpovich
 {
   const double PI = std::acos(-1.0);

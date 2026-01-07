@@ -1,0 +1,43 @@
+#ifndef STORAGE_SHAPE_HPP
+#define STORAGE_SHAPE_HPP
+#include <podshape.hpp>
+namespace karpovich
+{
+  struct storageShape final: Shape
+  {
+    storageShape() noexcept;
+    double getArea() const noexcept override;
+    rectangle_t getFrameRect() const noexcept override;
+    void move(point_t p) noexcept override;
+    void move(double dx, double dy) noexcept override;
+    void append(Shape* app);
+    void preappend(Shape* app);
+    void add(Shape* app, size_t idx);
+    Shape& first() const noexcept;
+    Shape& last() const noexcept;
+    const Shape& firstConst() const noexcept;
+    const Shape& lastConst() const noexcept;
+    Shape& at(size_t idx) const;
+    Shape& get(size_t idx) const noexcept;
+    const Shape& atConst(size_t idx) const;
+    const Shape& getConst(size_t idx) const noexcept;
+    void remove(size_t k);
+    void dropFirst();
+    void dropLast();
+    void clear() noexcept;
+    size_t size() noexcept;
+    bool empty() noexcept;
+    ~storageShape();
+    size_t capacity() const noexcept;
+    void shrink();
+    void reserve(size_t k);
+    Shape** returnShps();
+
+    private:
+      void doScale(double k) noexcept override;
+      Shape** shapes_;
+      size_t size_;
+      size_t cap_;
+  };
+}
+#endif
