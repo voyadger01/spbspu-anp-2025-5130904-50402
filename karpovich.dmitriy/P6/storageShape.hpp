@@ -5,33 +5,34 @@ namespace karpovich
 {
   struct storageShape final: Shape
   {
-    storageShape();
+    storageShape() noexcept;
     double getArea() const noexcept override;
     rectangle_t getFrameRect() const noexcept override;
     void move(point_t p) noexcept override;
     void move(double dx, double dy) noexcept override;
-
+    void doScale(double k) noexcept override;
     void append(Shape* app);
     void preappend(Shape* app);
     void add(Shape* app, size_t idx);
-    Shape& first() const;
-    Shape& last() const;
-    const Shape& firstConst() const;
-    const Shape& lastConst() const;
+    Shape& first() const noexcept;
+    Shape& last() const noexcept;
+    const Shape& firstConst() const noexcept;
+    const Shape& lastConst() const noexcept;
     Shape& at(size_t idx) const;
-    Shape& get(size_t idx) const;
+    Shape& get(size_t idx) const noexcept;
     const Shape& atConst(size_t idx) const;
-    const Shape& getConst(size_t idx) const;
+    const Shape& getConst(size_t idx) const noexcept;
     void remove(size_t k);
     void dropFirst();
     void dropLast();
-    void clear();
-    size_t size();
-    bool empty();
+    void clear() noexcept;
+    size_t size() noexcept;
+    bool empty() noexcept;
     ~storageShape();
-    size_t capacity() const;
+    size_t capacity() const noexcept;
     void shrink();
     void reserve(size_t k);
+    Shape** returnShps();
 
     private:
       void doScale(double k) noexcept override;

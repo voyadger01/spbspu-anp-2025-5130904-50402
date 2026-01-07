@@ -1,9 +1,15 @@
 #include "storageShape.hpp"
 #include <stdexcept>
-karpovich::storageShape::storageShape():
+karpovich::storageShape::storageShape() noexcept:
   shapes_ (nullptr),
   size_(0)
 {}
+void karpovich::storageShape::doScale(double k) noexcept
+{
+  for (size_t i = 0; i < size_; ++i) {
+    shapes_[i]->scale(k);
+  }
+}
 double karpovich::storageShape::getArea() const noexcept
 {
   double total = 0;
@@ -51,19 +57,19 @@ void karpovich::storageShape::add(Shape* app, size_t idx)
     ++size_;
   }
 }
-karpovich::Shape& karpovich::storageShape::first() const
+karpovich::Shape& karpovich::storageShape::first() const noexcept
 {
   return *shapes_[0];
 }
-karpovich::Shape& karpovich::storageShape::last() const
+karpovich::Shape& karpovich::storageShape::last() const noexcept
 {
   return *shapes_[size_ - 1];
 }
-const karpovich::Shape& karpovich::storageShape::firstConst() const
+const karpovich::Shape& karpovich::storageShape::firstConst() const noexcept
 {
   return *shapes_[0];
 }
-const karpovich::Shape& karpovich::storageShape::lastConst() const
+const karpovich::Shape& karpovich::storageShape::lastConst() const noexcept
 {
   return *shapes_[size_ - 1];
 }
@@ -74,15 +80,18 @@ karpovich::Shape& karpovich::storageShape::at(size_t idx) const
   }
   return *shapes_[idx];
 }
-karpovich::Shape& karpovich::storageShape::get(size_t idx) const
+karpovich::Shape& karpovich::storageShape::get(size_t idx) const noexcept
 {
   return *shapes_[idx];
 }
 const karpovich::Shape& karpovich::storageShape::atConst(size_t idx) const
 {
-  return at(idx);
+  if (idx >= size_) {
+    throw std::invalid_argument("out of bounds");
+  }
+  return *shapes_[idx];
 }
-const karpovich::Shape& karpovich::storageShape::getConst(size_t idx) const
+const karpovich::Shape& karpovich::storageShape::getConst(size_t idx) const noexcept
 {
   return *shapes_[idx];
 }
@@ -104,7 +113,7 @@ void karpovich::storageShape::dropLast()
 {
   remove(size_ - 1);
 }
-void karpovich::storageShape::clear()
+void karpovich::storageShape::clear() noexcept
 {
   for (size_t i = 0; i < size_; ++i) {
     delete shapes_[i];
@@ -112,11 +121,11 @@ void karpovich::storageShape::clear()
   delete[] shapes_;
   size_ = 0;
 }
-size_t karpovich::storageShape::size()
+size_t karpovich::storageShape::size() noexcept
 {
   return size_;
 }
-bool karpovich::storageShape::empty()
+bool karpovich::storageShape::empty() noexcept
 {
   return !size_;
 }
@@ -144,7 +153,11 @@ void karpovich::storageShape::shrink()
 {
   reserve(size_);
 }
-size_t karpovich::storageShape::capacity() const
+size_t karpovich::storageShape::capacity() const noexcept
 {
   return cap_;
+}
+karpovich::Shape** karpovich::storageShape::returnShps()
+{
+  return shapes_;
 }
