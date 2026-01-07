@@ -5,6 +5,7 @@ namespace karpovich
 {
   struct storageShape final: Shape
   {
+    storageShape();
     double getArea() const noexcept override;
     rectangle_t getFrameRect() const noexcept override;
     void move(point_t p) noexcept override;
@@ -27,6 +28,7 @@ namespace karpovich
     void clear();
     void size();
     bool empty();
+    ~storageShape();
     private:
       void doScale(double k) noexcept override;
   };
