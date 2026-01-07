@@ -1,7 +1,7 @@
 #ifndef STORAGE_SHAPE_HPP
 #define STORAGE_SHAPE_HPP
 #include <podshape.hpp>
-namespace karpovich 
+namespace karpovich
 {
   struct storageShape final: Shape
   {
@@ -11,9 +11,9 @@ namespace karpovich
     void move(point_t p) noexcept override;
     void move(double dx, double dy) noexcept override;
 
-    void append(const Shape* app);
-    void preappend(const Shape* app);
-    void add(const Shape* app, size_t idx);
+    void append(Shape* app);
+    void preappend(Shape* app);
+    void add(Shape* app, size_t idx);
     Shape& first() const;
     Shape& last() const;
     const Shape& firstConst() const;
@@ -29,11 +29,15 @@ namespace karpovich
     size_t size();
     bool empty();
     ~storageShape();
+    size_t capacity() const;
+    void shrink();
+    void reserve(size_t k);
 
     private:
       void doScale(double k) noexcept override;
       Shape** shapes_;
       size_t size_;
+      size_t cap_;
   };
 }
 #endif
