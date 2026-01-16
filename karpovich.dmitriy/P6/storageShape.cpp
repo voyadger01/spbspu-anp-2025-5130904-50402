@@ -2,8 +2,63 @@
 #include <stdexcept>
 karpovich::storageShape::storageShape() noexcept:
   shapes_ (nullptr),
-  size_(0)
+  size_(0),
+  cap_(0)
 {}
+karpovich::storageShape::storageShape(const storageShape& other):
+  shapes_(nullptr),
+  size_(other.size_),
+  cap_(other.cap_)
+{
+  if (cap_ > 0) {
+    shapes_ = new Shape*[cap_];
+    for (size_t i = 0; i < size_; ++i) {
+      shapes_[i] = other.shapes_[i]->clone();
+    }
+  }
+}
+karpovich::storageShape& karpovich::storageShape::operator=(const storageShape& other)
+{
+  if (this != &other) {
+    clear();
+    size_ = other.size_;
+    cap_ = other.cap_;
+    if (cap_ > 0) {
+      shapes_ = new Shape*[cap_];
+      for (size_t i = 0; i < size_; ++i) {
+        shapes_[i] = other.shapes_[i]->clone();
+      }
+    } else {
+      shapes_ = nullptr;
+    }
+  }
+  return *this;
+}
+karpovich::storageShape::storageShape(storageShape&& other) noexcept:
+  shapes_(other.shapes_),
+  size_(other.size_),
+  cap_(other.cap_)
+{
+  other.shapes_ = nullptr;
+  other.size_ = 0;
+  other.cap_ = 0;
+}
+karpovich::storageShape& karpovich::storageShape::operator=(storageShape&& other) noexcept {
+  if (this != &other) {
+    clear();
+    shapes_ = other.shapes_;
+    size_ = other.size_;
+    cap_ = other.cap_;
+    other.shapes_ = nullptr;
+    other.size_ = 0;
+    other.cap_ = 0;
+  }
+  return *this;
+}
+karpovich::Shape* karpovich::storageShape::clone() const
+{
+  throw std::logic_error("ts is not clonable");
+}
 void karpovich::storageShape::doScale(double k) noexcept
 {
   for (size_t i = 0; i < size_; ++i) {

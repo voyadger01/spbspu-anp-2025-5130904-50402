@@ -6,6 +6,12 @@ namespace karpovich
   struct storageShape final: Shape
   {
     storageShape() noexcept;
+    storageShape(const storageShape& other);
+    storageShape& operator=(const storageShape& other);
+    storageShape(storageShape&& other) noexcept;
+    storageShape& operator=(storageShape&& other) noexcept;
+    ~storageShape();
+
     double getArea() const noexcept override;
     rectangle_t getFrameRect() const noexcept override;
     void move(point_t p) noexcept override;
@@ -27,11 +33,11 @@ namespace karpovich
     void clear() noexcept;
     size_t size() noexcept;
     bool empty() noexcept;
-    ~storageShape();
     size_t capacity() const noexcept;
     void shrink();
     void reserve(size_t k);
     Shape** returnShps();
+    Shape* clone() const override;
 
     private:
       void doScale(double k) noexcept override;

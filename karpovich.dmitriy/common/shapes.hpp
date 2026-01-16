@@ -12,6 +12,7 @@ namespace karpovich
     rectangle_t getFrameRect() const noexcept override;
     void move(double dx, double dy) noexcept override;
     void move(point_t p) noexcept override;
+    Shape* clone() const override;
     private:
       double width_, height_;
       point_t centr_;
@@ -24,6 +25,7 @@ namespace karpovich
     rectangle_t getFrameRect() const noexcept override;
     void move(double dx, double dy) noexcept override;
     void move(point_t p) noexcept override;
+    Shape* clone() const override;
     private:
       double radius1_, radius2_;
       point_t centr1_, centr2_;
@@ -36,6 +38,7 @@ namespace karpovich
     rectangle_t getFrameRect() const noexcept override;
     void move(double dx, double dy) noexcept override;
     void move(point_t p) noexcept override;
+    Shape* clone() const override;
     private:
       double semiax1_, semiax2_;
       point_t centr_;
