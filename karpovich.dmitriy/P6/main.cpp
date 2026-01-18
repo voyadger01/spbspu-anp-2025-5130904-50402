@@ -12,16 +12,11 @@ int main()
   shps.append(std::addressof(rect));
   shps.append(std::addressof(ell));
   shps.append(std::addressof(rub));
-
   karp::output(shps.karp::storageShape::returnShps(), shps.size());
   karp::point_t pt = {};
   double k = 0;
   if (!(std::cin >> pt.x >> pt.y >> k)) {
     std::cerr << "err: failed to read input\n";
-    return 1;
-  }
-  if (k <= 0) {
-    std::cerr << "err: k must be positive\n";
     return 1;
   }
   try {
@@ -30,7 +25,6 @@ int main()
     std::cerr << e.what() << '\n';
     return 1;
   }
-
   karp::output(shps.karp::storageShape::returnShps(), shps.size());
   return 0;
 }
