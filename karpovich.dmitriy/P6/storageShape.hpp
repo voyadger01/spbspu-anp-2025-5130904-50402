@@ -3,14 +3,14 @@
 #include <podshape.hpp>
 namespace karpovich
 {
-  struct storageShape final: Shape
+  struct StorageShape final: Shape
   {
-    storageShape() noexcept;
-    storageShape(const storageShape& other);
-    storageShape& operator=(const storageShape& other);
-    storageShape(storageShape&& other) noexcept;
-    storageShape& operator=(storageShape&& other) noexcept;
-    ~storageShape();
+    StorageShape() noexcept;
+    StorageShape(const StorageShape& other);
+    StorageShape& operator=(const StorageShape& other);
+    StorageShape(StorageShape&& other) noexcept;
+    StorageShape& operator=(StorageShape&& other) noexcept;
+    ~StorageShape();
 
     double getArea() const noexcept override;
     rectangle_t getFrameRect() const noexcept override;
