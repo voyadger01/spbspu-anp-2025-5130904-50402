@@ -3,9 +3,12 @@
 
 void karpovich::scalefrompt(Shape* shapes[], size_t size, double k, point_t pt)
 {
+  if (k <= 0.0) {
+    throw std::invalid_argument("err: k must be positive\n");
+  }
   for (size_t i = 0; i < size; ++i) {
     shapes[i]->move(-pt.x, -pt.y);
-    shapes[i]->scale(k);
+    shapes[i]->uncheckedScale(k);
     shapes[i]->move(pt.x, pt.y);
   }
 }
