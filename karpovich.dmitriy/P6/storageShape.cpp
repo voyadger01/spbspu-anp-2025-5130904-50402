@@ -43,7 +43,8 @@ karpovich::storageShape::storageShape(storageShape&& other) noexcept:
   other.size_ = 0;
   other.cap_ = 0;
 }
-karpovich::storageShape& karpovich::storageShape::operator=(storageShape&& other) noexcept {
+karpovich::storageShape& karpovich::storageShape::operator=(storageShape&& other) noexcept
+{
   if (this != &other) {
     clear();
     shapes_ = other.shapes_;
