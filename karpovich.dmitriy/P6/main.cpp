@@ -1,6 +1,6 @@
 #include <iostream>
 #include <shapes.hpp>
-#include "storageShape.hpp"
+#include "storageActions.hpp"
 
 int main()
 {
@@ -12,7 +12,7 @@ int main()
   shps.append(std::addressof(rect));
   shps.append(std::addressof(ell));
   shps.append(std::addressof(rub));
-  karp::output(shps.karp::StorageShape::returnShps(), shps.size());
+  karp::output(shps, shps.size());
   karp::point_t pt = {};
   double k = 0;
   if (!(std::cin >> pt.x >> pt.y >> k)) {
@@ -20,11 +20,11 @@ int main()
     return 1;
   }
   try {
-    scalefrompt(shps.karp::StorageShape::returnShps(), shps.size(), k, pt);
+    scalefrompt(shps, shps.size(), k, pt);
   } catch (const std::invalid_argument& e) {
     std::cerr << e.what() << '\n';
     return 1;
   }
-  karp::output(shps.karp::StorageShape::returnShps(), shps.size());
+  karp::output(shps, shps.size());
   return 0;
 }

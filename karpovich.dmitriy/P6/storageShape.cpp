@@ -14,7 +14,7 @@ karpovich::StorageShape::StorageShape(const StorageShape& other):
     shapes_ = new Shape*[cap_];
     size_ = 0;
     try {
-      for (; size_ < size_; ++size_) {
+      for (; size_ < other.size_; ++size_) {
         shapes_[size_] = other.shapes_[size_]->clone();
       }
     } catch (const std::bad_alloc&) {
