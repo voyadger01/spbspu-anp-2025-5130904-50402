@@ -7,10 +7,10 @@ namespace karpovich
   {
     StorageShape() noexcept;
     StorageShape(const StorageShape& other);
-    StorageShape& operator=(const StorageShape& other);
     StorageShape(StorageShape&& other) noexcept;
-    StorageShape& operator=(StorageShape&& other) noexcept;
     ~StorageShape();
+    StorageShape& operator=(StorageShape&& other) noexcept;
+    StorageShape& operator=(const StorageShape& other);
 
     double getArea() const noexcept override;
     rectangle_t getFrameRect() const noexcept override;
@@ -19,12 +19,12 @@ namespace karpovich
     void append(Shape* app);
     void preappend(Shape* app);
     void add(Shape* app, size_t idx);
-    Shape& first() const noexcept;
-    Shape& last() const noexcept;
+    Shape& first() noexcept;
+    Shape& last() noexcept;
     const Shape& firstConst() const noexcept;
     const Shape& lastConst() const noexcept;
-    Shape& at(size_t idx) const;
-    Shape& get(size_t idx) const noexcept;
+    Shape& at(size_t idx);
+    Shape& get(size_t idx) noexcept;
     const Shape& atConst(size_t idx) const;
     const Shape& getConst(size_t idx) const noexcept;
     void remove(size_t k);
@@ -36,14 +36,14 @@ namespace karpovich
     size_t capacity() const noexcept;
     void shrink();
     void reserve(size_t k);
-    Shape** returnShps();
     Shape* clone() const override;
+    void swap(StorageShape& other) noexcept;
 
     private:
-      void doScale(double k) noexcept override;
       Shape** shapes_;
       size_t size_;
       size_t cap_;
+      void doScale(double k) noexcept override;
   };
 }
 #endif

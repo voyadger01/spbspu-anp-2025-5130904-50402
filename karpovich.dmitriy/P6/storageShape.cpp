@@ -12,12 +12,16 @@ karpovich::StorageShape::StorageShape(const StorageShape& other):
 {
   if (cap_ > 0) {
     shapes_ = new Shape*[cap_];
+    size_ = 0;
     try {
-      for (size_t i = 0; i < size_; ++i) {
-        shapes_[i] = other.shapes_[i]->clone();
+      for (; size_ < size_; ++size_) {
+        shapes_[size_] = other.shapes_[size_]->clone();
       }
     } catch (const std::bad_alloc&) {
-      clear();
+      for (size_t i = 0; i < size_; ++i) {
+        delete shapes_[i];
+      }
+      delete[] shapes_;
       throw;
     }
   }
@@ -25,22 +29,8 @@ karpovich::StorageShape::StorageShape(const StorageShape& other):
 karpovich::StorageShape& karpovich::StorageShape::operator=(const StorageShape& other)
 {
   if (this != &other) {
-    clear();
-    size_ = other.size_;
-    cap_ = other.cap_;
-    if (cap_ > 0) {
-      shapes_ = new Shape*[cap_];
-      try {
-        for (size_t i = 0; i < size_; ++i) {
-          shapes_[i] = other.shapes_[i]->clone();
-        }
-      } catch (const std::bad_alloc&) {
-          clear();
-          throw;
-      }
-    } else {
-      shapes_ = nullptr;
-    }
+    StorageShape temp(other);
+    this->swap(temp);
   }
   return *this;
 }
@@ -68,7 +58,7 @@ karpovich::StorageShape& karpovich::StorageShape::operator=(StorageShape&& other
 }
 karpovich::Shape* karpovich::StorageShape::clone() const
 {
-  throw std::logic_error("ts is not clonable");
+  return new StorageShape(*this);
 }
 void karpovich::StorageShape::doScale(double k) noexcept
 {
@@ -100,7 +90,6 @@ void karpovich::StorageShape::move(double dx, double dy) noexcept
     shapes_[i]->move(dx, dy);
   }
 }
-
 void karpovich::StorageShape::append(Shape* app)
 {
   add(app, size_);
@@ -123,11 +112,11 @@ void karpovich::StorageShape::add(Shape* app, size_t idx)
     ++size_;
   }
 }
-karpovich::Shape& karpovich::StorageShape::first() const noexcept
+karpovich::Shape& karpovich::StorageShape::first() noexcept
 {
   return *shapes_[0];
 }
-karpovich::Shape& karpovich::StorageShape::last() const noexcept
+karpovich::Shape& karpovich::StorageShape::last() noexcept
 {
   return *shapes_[size_ - 1];
 }
@@ -139,14 +128,14 @@ const karpovich::Shape& karpovich::StorageShape::lastConst() const noexcept
 {
   return *shapes_[size_ - 1];
 }
-karpovich::Shape& karpovich::StorageShape::at(size_t idx) const
+karpovich::Shape& karpovich::StorageShape::at(size_t idx)
 {
   if (idx >= size_) {
     throw std::invalid_argument("out of bounds");
   }
   return *shapes_[idx];
 }
-karpovich::Shape& karpovich::StorageShape::get(size_t idx) const noexcept
+karpovich::Shape& karpovich::StorageShape::get(size_t idx) noexcept
 {
   return *shapes_[idx];
 }
@@ -166,6 +155,7 @@ void karpovich::StorageShape::remove(size_t k)
   if (k >= size_) {
     throw std::out_of_range("out of bounds");
   }
+  delete shapes_[k];
   for (size_t i = k; i < size_ - 1; ++i) {
     shapes_[i] = shapes_[i + 1];
   }
@@ -185,7 +175,6 @@ void karpovich::StorageShape::clear() noexcept
     delete shapes_[i];
   }
   delete[] shapes_;
-  size_ = 0;
 }
 size_t karpovich::StorageShape::size() noexcept
 {
@@ -197,10 +186,7 @@ bool karpovich::StorageShape::empty() noexcept
 }
 karpovich::StorageShape::~StorageShape()
 {
-  for (size_t i = 0; i < size_; ++i) {
-    delete shapes_[i];
-  }
-  delete[] shapes_;
+  clear();
 }
 void karpovich::StorageShape::reserve(size_t k)
 {
@@ -223,7 +209,9 @@ size_t karpovich::StorageShape::capacity() const noexcept
 {
   return cap_;
 }
-karpovich::Shape** karpovich::StorageShape::returnShps()
+void karpovich::StorageShape::swap(StorageShape& other) noexcept
 {
-  return shapes_;
+  std::swap(shapes_, other.shapes_);
+  std::swap(size_, other.size_);
+  std::swap(cap_, other.cap_);
 }
